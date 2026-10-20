@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel — Rádio Costa</title>
+  <link rel="stylesheet" href="admin.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎛️</text></svg>">
+</head>
+<body>
+
+  <!-- ============ LOGIN ============ -->
+  <div class="login-wrap" id="login-view" hidden>
+    <form class="login-card" id="login-form">
+      <div class="logo">🎛️ Painel da <span id="login-station">Rádio Costa</span></div>
+      <label>Usuário
+        <input id="login-user" type="text" autocomplete="username" required>
+      </label>
+      <label>Senha
+        <input id="login-pass" type="password" autocomplete="current-password" required>
+      </label>
+      <button type="submit" class="btn primary">Entrar</button>
+      <p class="msg" id="login-msg"></p>
+    </form>
+  </div>
+
+  <!-- ============ PAINEL ============ -->
+  <div id="panel-view" hidden>
+    <header>
+      <div class="logo">🎛️ <span id="station-label">Rádio Costa</span></div>
+      <div class="header-right">
+        <span class="user" id="user-label"></span>
+        <a class="btn ghost" href="/" target="_blank">Ver site ↗</a>
+        <button class="btn ghost" id="btn-logout">Sair</button>
+      </div>
+    </header>
+
+    <main>
+      <!-- importar -->
+      <section>
+        <h2>📥 Importar músicas</h2>
+        <p class="hint">Formatos aceitos: MP3, M4A, AAC, OGG, OPUS, WAV, FLAC, WEBM, WMA — até 150 MB por arquivo.</p>
+        <div class="dropzone" id="dropzone">
+          Arraste os arquivos aqui<br>ou clique para escolher
+          <input type="file" id="files" multiple hidden
+                 accept=".mp3,.m4a,.aac,.ogg,.opus,.wav,.flac,.webm,.wma,audio/*">
+        </div>
+        <div class="fields">
+          <label>Artista (vale para os arquivos selecionados)
+            <input id="artist" type="text" placeholder="Ex.: Rita Costa">
+          </label>
+          <label>Álbum / coleção
+            <input id="album" type="text" placeholder="Ex.: Sucessos 2026">
+          </label>
+        </div>
+        <button class="btn primary" id="btn-upload">Importar para a programação</button>
+        <p class="msg" id="upload-msg"></p>
+      </section>
+
+      <!-- programação -->
+      <section>
+        <h2>🎵 Programação <span class="count" id="track-count"></span></h2>
+        <ol id="track-list"></ol>
+        <p class="hint" id="list-empty">Nenhuma música importada ainda.</p>
+      </section>
+
+      <!-- configurações -->
+      <section>
+        <h2>⚙️ Configurações</h2>
+
+        <label>Nome da rádio
+          <div class="row">
+            <input id="station-name" type="text" maxlength="60">
+            <button class="btn primary" id="btn-station">Salvar</button>
+          </div>
+        </label>
+
+        <hr>
+
+        <h3>Trocar senha</h3>
+        <label>Senha atual
+          <input id="old-pass" type="password" autocomplete="current-password">
+        </label>
+        <label>Nova senha (mínimo 6 caracteres)
+          <input id="new-pass" type="password" autocomplete="new-password">
+        </label>
+        <button class="btn primary" id="btn-password">Trocar senha</button>
+        <p class="msg" id="config-msg"></p>
+      </section>
+    </main>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
