@@ -1,0 +1,57 @@
+name: Build Windows e macOS
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Montar pacote portatil
+        shell: bash
+        run: |
+          mkdir -p pacote/RodarRadio
+          cp -r public admin dominios server.js package.json README.md PUBLICAR.md pacote/RodarRadio/
+          mkdir -p pacote/RodarRadio/musicas
+          printf '@echo off\r\ncd /d "%%~dp0"\r\nstart "" http://localhost:3000\r\nnode server.js\r\npause\r\n' > pacote/RodarRadio/Rodar-Radio.bat
+          printf 'Rode o arquivo Rodar-Radio.bat para abrir a radio.\r\nA pasta "musicas" guarda os arquivos de audio enviados pelo painel.\r\n' > pacote/RodarRadio/LEIA-ME.txt
+      - name: Compactar
+        shell: bash
+        run: |
+          cd pacote && 7z a ../RadioOnline-Windows.zip RodarRadio
+      - name: Enviar artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: RadioOnline-Windows
+          path: RadioOnline-Windows.zip
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Montar pacote portatil
+        run: |
+          mkdir -p pacote/RodarRadio
+          cp -r public admin dominios server.js package.json README.md PUBLICAR.md pacote/RodarRadio/
+          mkdir -p pacote/RodarRadio/musicas
+          printf '#!/bin/bash\ncd "$(dirname "$0")"\nopen http://localhost:3000\nnode server.js\n' > pacote/RodarRadio/Rodar-Radio.command
+          chmod +x pacote/RodarRadio/Rodar-Radio.command
+          printf 'Clique duas vezes em Rodar-Radio.command para abrir a radio.\nSe o macOS bloquear, clique com o botao direito e escolha Abrir.\nA pasta "musicas" guarda os arquivos de audio enviados pelo painel.\n' > pacote/RodarRadio/LEIA-ME.txt
+      - name: Compactar
+        run: |
+          cd pacote && zip -r ../RadioOnline-macOS.zip RodarRadio
+      - name: Enviar artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: RadioOnline-macOS
+          path: RadioOnline-macOS.zip
