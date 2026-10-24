@@ -371,8 +371,16 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.requestTimeout = 15 * 60 * 1000; // uploads grandes
-server.listen(PORT, () => {
-  console.log("📻 RÁDIO COSTA no ar!");
-  console.log("   Ouvintes:  http://localhost:" + PORT);
-  console.log("   Painel:    http://localhost:" + PORT + "/admin");
-});
+
+if (require.main === module) {
+  server.listen(PORT, () => {
+    console.log("📻 RÁDIO COSTA no ar!");
+    console.log("   Ouvintes:  http://localhost:" + PORT);
+    console.log("   Painel:    http://localhost:" + PORT + "/admin");
+  });
+}
+
+module.exports = {
+  hashPass, checkPass, sign, createToken, checkToken,
+  readJson, writeJson, EXT_MIME, AUDIO_OK,
+};
