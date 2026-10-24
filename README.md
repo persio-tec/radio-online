@@ -20,6 +20,24 @@ node server.js
 - Site dos ouvintes: <http://localhost:3000>
 - Painel do administrador: <http://localhost:3000/admin>
 
+## 💿 Windows e macOS
+
+Há pacotes portáteis prontos, sem precisar instalar nada:
+
+1. Abra a aba **Actions** do repositório no GitHub.
+2. Selecione o fluxo **Build Windows e macOS** e clique em **Run workflow**.
+3. Ao terminar, baixe o artefato desejado na própria execução:
+   - `RadioOnline-Windows` — arquivo `RadioOnline-Windows.zip`
+   - `RadioOnline-macOS` — arquivo `RadioOnline-macOS.zip`
+4. Extraia o arquivo e execute:
+   - Windows: `Rodar-Radio.bat`
+   - macOS: `Rodar-Radio.command` (se o sistema bloquear, clique com o botão
+     direito e escolha **Abrir**)
+
+Os dois pacotes continuam precisando do **Node.js** instalado (versão 18 ou
+superior): <https://nodejs.org>. A pasta `musicas` ao lado do servidor guarda os
+áudios enviados pelo painel.
+
 ### Primeiro acesso
 Na primeira execução o terminal mostra:
 
