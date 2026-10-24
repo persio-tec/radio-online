@@ -51,7 +51,10 @@ function readJson(file, fallback) {
   catch { return fallback; }
 }
 function writeJson(file, obj) {
-  fs.writeFileSync(path.join(DIR_DATA, file), JSON.stringify(obj, null, 2));
+  const target = path.join(DIR_DATA, file);
+  const tmp = target + ".tmp";
+  fs.writeFileSync(tmp, JSON.stringify(obj, null, 2));
+  fs.renameSync(tmp, target);
 }
 function sendJson(res, code, obj) {
   const body = JSON.stringify(obj);
@@ -81,10 +84,12 @@ function checkPass(pass, salt, hash) {
 const secretFile = path.join(DIR_DATA, "secret.key");
 let SECRET;
 if (fs.existsSync(secretFile)) {
+  try { fs.chmodSync(secretFile, 0o600); } catch (e) {}
   SECRET = fs.readFileSync(secretFile, "utf8").trim();
 } else {
   SECRET = crypto.randomBytes(32).toString("hex");
   fs.writeFileSync(secretFile, SECRET);
+  try { fs.chmodSync(secretFile, 0o600); } catch (e) {}
 }
 
 let users = readJson("users.json", null);
@@ -94,6 +99,7 @@ if (!users) {
   const salt = crypto.randomBytes(16).toString("hex");
   users = [{ user, salt, hash: hashPass(pass, salt) }];
   writeJson("users.json", users);
+  try { fs.chmodSync(path.join(DIR_DATA, "users.json"), 0o600); } catch (e) {}
   console.log("\n==============================================");
   console.log("  📻 PRIMEIRO ACESSO — Painel da Rádio Costa");
   console.log("  Painel:  http://localhost:" + PORT + "/admin");
